@@ -4,17 +4,17 @@ let all_tasks = []
 let scheduled = false
 
 class Step {
-    constructor(options) {
-        if (typeof options === 'string') {
-            options = { description: options }
-        } else if (!options.description) {
-            throw new Error('Description is required.')
-        }
-        this.description = options.description
+  constructor(options) {
+    if (typeof options === 'string') {
+      options = { description: options }
+    } else if (!options.description) {
+      throw new Error('Description is required.')
     }
-    async present() {
-        console.log('* [ ] ' + this.description)
-    }
+    this.description = options.description
+  }
+  async present() {
+    console.log('* [ ] ' + this.description)
+  }
 }
 
 function step(options) {
@@ -22,33 +22,33 @@ function step(options) {
 }
 
 class Task {
-    constructor(options) {
-        if (typeof options === 'string') {
-            options = { description: options }
-        } else if (!options.description) {
-            throw new Error('Description is required.')
-        }
-        this.description = options.description
-        this.steps = []
-        this.ondone = () => {}
+  constructor(options) {
+    if (typeof options === 'string') {
+      options = { description: options }
+    } else if (!options.description) {
+      throw new Error('Description is required.')
     }
-    step(options) {
-        this.steps.push(step(options))
-        return this
+    this.description = options.description
+    this.steps = []
+    this.ondone = () => {}
+  }
+  step(options) {
+    this.steps.push(step(options))
+    return this
+  }
+  done(cb) {
+    this.ondone = cb
+  }
+  async present() {
+    console.log('===========================')
+    console.log(this.description)
+    console.log('===========================')
+    for (const step of this.steps) {
+      await step.present()
     }
-    done(cb) {
-      this.ondone = cb
-    }
-    async present() {
-        console.log('===========================')
-        console.log(this.description)
-        console.log('===========================')
-        for (const step of this.steps) {
-            await step.present()
-        }
-        console.log()
-        this.ondone()
-    }
+    console.log()
+    this.ondone()
+  }
 }
 
 function task(options) {
