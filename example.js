@@ -10,4 +10,4 @@ task('Set Up System')
     .step('Change user password.')
     .step('Set default shell.')
     .step('Add shared mounts.')
-    .done(exit)
+    .done(exit) // A must-have for every last step!
