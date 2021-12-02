@@ -12,6 +12,9 @@ function isKeyReturn(key) { return key.name == 'return' }
 function isKeySkip(key) { return key.name == 'n' }
 process.stdin.on('keypress', (chunk, key) => {
   if (isKeyQuit(key)) {
+    if (waiting_for_return.length == 0) {
+      process.exit(0) // Helps when the final .done(exit) is forgotten.
+    }
     quit = true
     function skipskipskip() {
       if (waiting_for_return.length > 0) {
